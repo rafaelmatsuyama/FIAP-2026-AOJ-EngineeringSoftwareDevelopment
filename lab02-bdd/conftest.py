@@ -1,0 +1,1 @@
+# Conftest vazio para forçar o Pytest a adicionar a raiz do projeto ao PYTHONPATH
