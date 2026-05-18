@@ -21,6 +21,6 @@
 			}
 		}
 	},
-	"postCreateCommand": "pip install --upgrade pip && pip install pytest ruff",
+	"postCreateCommand": "pip install --upgrade pip && pip install pytest ruff pytest-bdd",
 	"remoteUser": "vscode"
 }
