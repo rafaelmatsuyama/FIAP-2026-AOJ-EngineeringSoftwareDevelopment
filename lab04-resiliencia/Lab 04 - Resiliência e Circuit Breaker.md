@@ -20,7 +20,7 @@ Implementar a biblioteca `tenacity` para envelopar chamadas instáveis, configur
 ## 🗺️ Passo 1: O Caos Instalado
 1. No seu Codespaces, navegue até a pasta do laboratório:
    ```bash
-   cd labs/lab04-resiliencia
+   cd lab04-resiliencia
    ```
 2. Tente rodar o teste de stress e observe a demora (o terminal vai parecer travado):
    ```bash
