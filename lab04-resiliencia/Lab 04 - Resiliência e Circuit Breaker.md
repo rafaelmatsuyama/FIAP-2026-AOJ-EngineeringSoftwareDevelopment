@@ -40,12 +40,19 @@ pip install tenacity
 ---
 
 ## ✂️ Passo 3: Implementando o Circuit Breaker
-Abra o arquivo `checkout_service.py`. Você verá que a função `processar_pagamento` é vulnerável. Vamos protegê-la.
+Abra o arquivo `checkout_service.py`. Vamos proteger a função `processar_pagamento`. 
 
-**1. Prepare o Código de Socorro (Fallback):**
-Adicione este método na classe `CheckoutService`. Ele será chamado quando o sistema desistir de esperar o Anti-Fraude:
+**Siga os passos abaixo para garantir que o Python reconheça as funções corretamente:**
+
+**1. Importações e Função de Socorro (Fallback):**
+No **topo do arquivo** (antes da classe), adicione as importações e a função de fallback. Definir o fallback fora da classe garante que o decorator `@retry` consiga encontrá-lo durante a inicialização:
+
 ```python
-def fallback_seguro(self, retry_state):
+import requests
+from tenacity import retry, stop_after_attempt, wait_fixed
+
+# Função de Fallback (Socorro)
+def fallback_seguro(retry_state):
     print("!!! ALERTA: Anti-Fraude instável. Acionando Fallback de Segurança !!!")
     return {
         "status": "ANALISE_MANUAL", 
@@ -55,20 +62,17 @@ def fallback_seguro(self, retry_state):
 ```
 
 **2. Configure o Disjuntor (Decorator):**
-Importe as ferramentas e decore a função principal. Copie e cole este Snippet sobre a função original:
-```python
-from tenacity import retry, stop_after_attempt, wait_fixed
+Agora, decore a função `processar_pagamento` dentro da classe `CheckoutService`. Copie e cole este Snippet substituindo a função original:
 
-class CheckoutService:
-    # O decorator abaixo gerencia as tentativas e a falha
+```python
     @retry(
         stop=stop_after_attempt(3), # Tenta apenas 3 vezes
         wait=wait_fixed(0.1),        # Espera só 100ms entre elas
         retry_error_callback=fallback_seguro # Se falhar tudo, chama o socorro
     )
     def processar_pagamento(self, transacao):
-        # IMPORTANTE: Adicione um timeout curto no requests para não travar a thread!
-        response = requests.get("http://api-antifraude:8080/v1/validar", timeout=0.5)
+        # IMPORTANTE: Reduza o timeout para 0.5s para forçar a falha rápida!
+        response = requests.get(self.antifraude_url, timeout=0.5)
         return response.json()
 ```
 
