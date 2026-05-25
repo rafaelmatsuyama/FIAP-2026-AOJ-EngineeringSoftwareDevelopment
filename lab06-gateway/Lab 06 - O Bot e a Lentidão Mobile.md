@@ -31,6 +31,7 @@ Sua missão é transformar um servidor FastAPI básico em um Gateway inteligente
    ```
 3. Em outro terminal, rode o teste de reconhecimento:
    ```bash
+   cd lab06-gateway
    pytest test_gateway.py -v
    ```
    *Você verá que o teste de agregação falha (404 Not Found) e o teste de segurança passa direto (o Bot consegue acessar tudo).*
