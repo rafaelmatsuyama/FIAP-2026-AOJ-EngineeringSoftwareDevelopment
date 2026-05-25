@@ -21,6 +21,6 @@
 			}
 		}
 	},
-	"postCreateCommand": "pip install --upgrade pip && pip install pytest ruff pytest-bdd tenacity requests",
+	"postCreateCommand": "pip install --upgrade pip && pip install pytest ruff pytest-bdd tenacity requests responses",
 	"remoteUser": "vscode"
 }
